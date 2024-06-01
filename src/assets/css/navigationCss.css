@@ -1,0 +1,12 @@
+
+.cart-counter {
+    position: absolute;
+    top: -5px; 
+    right: -28px;
+    background-color: red; 
+    color: white; 
+    border-radius: 50%; 
+    padding: 5px 8px;
+    font-size: 12px;
+  }
+  

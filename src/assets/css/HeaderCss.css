@@ -1,0 +1,53 @@
+.button-load-more {
+    background-color: #45a049; 
+    color: #fff; 
+    padding: 10px 20px; 
+    border: none; 
+    border-radius: 5px; 
+    cursor: pointer; 
+  
+  }
+  
+  .button-load-more:hover {
+    background-color: #45a049; 
+  }
+  .btn-load-more{
+    padding-bottom: 20px;
+  }
+  .no-results{
+    font-size: 20px;
+    margin: 30px;
+  }
+  .custom-link {
+    text-decoration: none; 
+    color: #333; 
+  }
+  
+  .custom-link:hover {
+   color: #45a049;
+  }
+  
+
+  .chat-box-header {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px; /* Đặt chiều rộng và chiều cao là giống nhau để tạo thành hình tròn */
+    height: 60px;
+    border-radius: 50%; /* Sử dụng border-radius để tạo hình tròn */
+    background-color: #45a049; /* Màu nền của box chat */
+    z-index: 999; /* Đảm bảo hiển thị trên cùng của các phần tử khác */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Hiệu ứng chuyển đổi màu nền */
+    border: none;
+  }
+  
+  .chat-box-header:hover {
+    background-color: #45a049; /* Màu nền thay đổi khi di chuột vào */
+  }
+  
+  
+  

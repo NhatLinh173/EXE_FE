@@ -1,0 +1,73 @@
+.profile{
+    height: 90vh;
+    margin: 150px 0 80px 0;
+    /* margin-bottom: 20px; */
+}
+.form-profile{
+    width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.title-profile{
+    margin-bottom: 20px;
+}
+.text-profile{
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+.button-profile{
+    background-color: #45a049;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.button-profile:hover{
+    background-color: #45a049;
+}
+.input-profile{
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+.input-profile:focus{
+    outline: none;
+    border-color: #45a049;
+}
+.btn-back{
+    color: white;
+}
+
+.button-update{
+    position: absolute;
+    background-color: #45a049;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 285px;
+}
+.button-update:hover{
+    background-color: #45a049;
+}
+.button-save{
+    position: absolute;
+    background-color: #45a049;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 332px;
+}
+.button-save:hover{
+    background-color: #45a049;
+}

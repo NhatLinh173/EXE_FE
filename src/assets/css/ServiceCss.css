@@ -1,0 +1,20 @@
+
+
+#services {
+  padding-top: 150px; 
+  background-color: aqua;
+}
+
+.section-title {
+  margin-bottom: 30px; 
+}
+
+.service-info h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.service-info p {
+  font-size: 14px;
+}
+

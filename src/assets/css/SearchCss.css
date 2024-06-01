@@ -1,0 +1,125 @@
+.search-container {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 20px;
+  }
+  .in-cart-message {
+    font-size: 14px; 
+    width: 150px;
+    height: 6px;
+    text-align: center;
+  }
+  #search-bar {
+    padding: 10px 30px 10px 10px; 
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    box-sizing: border-box;
+    width: 500px;
+  }
+  
+  #search-button {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 40px; 
+    border: none;
+    background: transparent;
+    cursor: pointer;
+  }
+  
+  #search-button i {
+    color: #213121;
+  }
+  
+
+  #search-button:hover i {
+    color: #55f968;
+  }
+  .product-item {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+  .product-item{
+    height: 430px;
+    width: 360px;
+  }
+  .portfolio-items img {
+    max-width: 100%; 
+    height: auto; 
+    display: block; 
+    margin: 0 auto;
+    width: 300px; 
+    height: 300px;
+    padding: 0;
+    border: 0;
+  }
+  .addToCard {
+    background-color: #4caf50; 
+    color: white; 
+    padding: 5px 10px; 
+    border: none; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    margin-right: 8px;
+  }
+  
+  .addToCard:hover {
+    background-color: #45a049; 
+  }
+  
+  
+  .button-container-category {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .pagination button {
+    background-color: #4caf50;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    margin: 0 5px;
+    cursor: pointer;
+  }
+  
+  .pagination button:hover {
+    background-color: #45a049;
+  }
+  
+  .pagination button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+  
+  .btn-pagination {
+    background-color: #007bff; 
+    color: #ffffff; 
+  }
+  .btn-pagination:hover {
+    background-color: #45a049; 
+  }
+
+  .button-load-more {
+    background-color: #45a049;
+    color: #fff; 
+    padding: 10px 20px; 
+    border: none;
+    border-radius: 5px; 
+    cursor: pointer; 
+  
+  }
+  
+  .button-load-more:hover {
+    background-color: #45a049; 
+  }
+  .btn-load-more{
+    padding-bottom: 20px;
+  }
+  .no-results{
+    font-size: 20px;
+    margin: 30px;
+  }
+  

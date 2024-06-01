@@ -1,0 +1,29 @@
+.main-box {
+    border: 2px solid #ccc; /* Thêm viền 2px solid với màu xám */
+    padding: 20px; /* Thêm padding 20px để tạo khoảng cách giữa nội dung và viền */
+    max-width: 400px; /* Đặt chiều rộng tối đa cho hộp chính */
+    margin: 0 auto; 
+    margin-bottom: 20px;/* Căn giữa theo chiều ngang */
+    border-radius: 5%;
+  }
+  
+  .payment-title {
+    font-size: 24px; /* Cỡ chữ tiêu đề */
+    color: #333; /* Màu chữ */
+    margin-bottom: 20px; /* Khoảng cách dưới tiêu đề */
+  }
+  
+  #return-page-btn {
+    display: block;
+    margin-top: 20px;
+    padding: 10px 20px; /* Thêm padding cho nút */
+    background-color: #4caf50; /* Màu nền của nút */
+    color: #fff; /* Màu chữ của nút */
+    border: none; /* Loại bỏ viền của nút */
+    cursor: pointer; /* Hiển thị con trỏ khi di chuột qua */
+  }
+  
+  #return-page-btn:hover {
+    background-color: #4caf50; /* Màu nền khi di chuột qua */
+  }
+  

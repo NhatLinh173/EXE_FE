@@ -1,0 +1,12 @@
+.load-more{
+    background-color: #45a049; /* Màu nền của nút */
+    color: #fff; /* Màu chữ của nút */
+    padding: 5px 10px; /* Kích thước nút */
+    border: none; /* Loại bỏ viền */
+    border-radius: 5px; /* Bo tròn góc của nút */
+    cursor: pointer; /* Hiển thị con trỏ khi di chuột qua nút */
+    transition: background-color 0.3s ease; /* Hiệu ứng chuyển đổi màu nền */
+}
+.load-more:hover{
+    background-color: #80dc85; 
+}
