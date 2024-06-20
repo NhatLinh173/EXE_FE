@@ -13,17 +13,8 @@ export const Header = (props) => {
   const [searchKeyword, setSearchKeyword] = useState("");
   const [noResults, setNoResults] = useState(false);
   const [expanded, setExpanded] = useState(false);
-  const [showChatBox, setShowChatBox] = useState(false);
   const [showChatButton, setShowChatButton] = useState(true);
 
-  const toggleChatBox = () => {
-    setShowChatBox(!showChatBox);
-  };
-
-  const closeChatBox = () => {
-    setShowChatBox(false);
-    setShowChatButton(true);
-  };
   console.log(products);
   const toggleExpand = () => {
     setExpanded(!expanded);
@@ -284,17 +275,6 @@ export const Header = (props) => {
           )}
         </div>
       </div>
-      {showChatButton && (
-        <button
-          onClick={toggleChatBox}
-          className="chat-box-header"
-          style={{ zIndex: 1000 }}
-        >
-          <FontAwesomeIcon icon={faComment} style={{ color: "#fff" }} />
-        </button>
-      )}
-
-      {showChatBox && <ChatBox style={{ zIndex: 999 }} />}
     </>
   );
 };
