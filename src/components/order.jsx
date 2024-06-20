@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Route, Redirect } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 
 export const Order = () => {
@@ -35,7 +36,8 @@ export const Order = () => {
   const formatPrice = (price) => {
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
-  if (loading) return <div>Loading ...</div>;
+
+  if (loading) return <div>Loading...</div>;
 
   if (error) return <div>Error: {error.message}</div>;
 

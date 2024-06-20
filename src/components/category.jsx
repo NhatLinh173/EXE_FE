@@ -15,6 +15,7 @@ export const Category = ({ items, addToCart }) => {
   const [numberOfDisplayedProducts, setNumberOfDisplayedProducts] = useState(9);
   const [noResults, setNoResults] = useState(false);
   const [userId, setUserId] = useState(null);
+  const [role, setRole] = useState(null);
   const [addedToCartMap, setAddedToCartMap] = useState({});
   const [addedToCart, setAddedToCart] = useState(false);
   const history = useHistory();
@@ -45,6 +46,7 @@ export const Category = ({ items, addToCart }) => {
     if (token) {
       const decodedToken = jwtDecode(token);
       setUserId(decodedToken.id_user);
+      setRole(decodedToken.role);
     }
     fetchProduct();
   }, [searchKeyword]);
@@ -139,6 +141,7 @@ export const Category = ({ items, addToCart }) => {
   const handleSearchInputChange = (event) => {
     setSearchKeyword(event.target.value);
   };
+
   useEffect(() => {
     displayedProducts.forEach((product) => {
       const cartItems = localStorage.getItem("cartItems");
@@ -194,7 +197,7 @@ export const Category = ({ items, addToCart }) => {
                   <button
                     onClick={() => handleAddToCart(product)}
                     className="addToCard"
-                    disabled={addedToCartMap[product._id]}
+                    disabled={role === "admin" || addedToCartMap[product._id]}
                   >
                     {addedToCartMap[product._id] ? (
                       <p className="in-cart-message">Đã có trong giỏ hàng</p>

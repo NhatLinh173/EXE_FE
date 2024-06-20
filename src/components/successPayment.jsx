@@ -1,6 +1,30 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
+import axios from "axios";
 
 export const SuccessPage = () => {
+  const history = useHistory();
+
+  const params = new URLSearchParams(window.location.search);
+  const status = params.get("status");
+
+  const handleReturnClick = () => {
+    const orderCodeStatus = localStorage.getItem("orderCodeStatus");
+
+    axios
+      .put("http://localhost:3000/checkout/order/update-status", {
+        orderCodeStatus,
+        status,
+      })
+      .then((response) => {
+        console.log("Order update: ", response.data);
+      })
+      .catch((error) => {
+        console.error("There was an error updating the order: ", error);
+      });
+
+    history.push("/");
+  };
   return (
     <div className="main-box" style={{ marginTop: "150px" }}>
       <h4 className="payment-title">
@@ -10,7 +34,11 @@ export const SuccessPage = () => {
         Nếu có bất kỳ câu hỏi nào, hãy gửi email tới{" "}
         <a href="mailto:support@payos.vn">support@payos.vn</a>
       </p>
-      <a href="/" id="return-page-btn" style={{ width: "90px" , textAlign : "center" }}>
+      <a
+        onClick={handleReturnClick}
+        id="return-page-btn"
+        style={{ width: "90px", textAlign: "center" }}
+      >
         Trở về
       </a>
     </div>

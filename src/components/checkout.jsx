@@ -10,7 +10,6 @@ export const Checkout = () => {
   const { checkoutUrl } = location.state || {};
   const orderData = location.state?.orderData;
   const [shippingMethod, setShippingMethod] = useState("standard");
-  const [checkoutData, setCheckoutData] = useState(null);
   const [userId, setUserId] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
@@ -43,7 +42,6 @@ export const Checkout = () => {
   };
 
   const handleCheckout = async () => {
-    console.log("userId before checkout:", userId);
     if (
       !formData.name ||
       !formData.address ||
@@ -59,6 +57,7 @@ export const Checkout = () => {
     }
 
     let confirmationMessage = "";
+    let status = "PENDING";
     if (formData.paymentMethod === "cash") {
       confirmationMessage = "Đơn hàng của bạn đang đợi xác nhận";
     }
@@ -74,14 +73,18 @@ export const Checkout = () => {
       items: orderData.items,
       totalPrice: orderData.totalPrice,
       userId: userId,
-      status: null,
-      orderCode: null,
+      status: status,
+      orderCodeStatus: orderData.orderCodeStatus,
+      orderStatus: "Đợi Xác Nhận Đơn Hàng",
     };
+    const orderCodeStatus = orderData.orderCodeStatus;
+    localStorage.setItem("orderCodeStatus", orderCodeStatus);
     try {
       const response = await axios.post(
         "http://localhost:3000/checkout/",
         checkoutData
       );
+
       if (formData.paymentMethod === "cash") {
         toast.info(confirmationMessage);
 

@@ -5,8 +5,9 @@ import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import { toast } from "react-toastify";
-
+import { jwtDecode } from "jwt-decode";
 export const Login = (props) => {
+  const [userId, setUserId] = useState(null);
   const formsRef = useRef(null); // Sử dụng useRef để tham chiếu đến phần tử HTML có class là "forms"
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -40,7 +41,7 @@ export const Login = (props) => {
     }
   };
 
-  const   handleLogin = async () => {
+  const handleLogin = async () => {
     try {
       const response = await axios.post("http://localhost:3000/auth/login", {
         email,
@@ -89,11 +90,11 @@ export const Login = (props) => {
 
     links.forEach((link) => {
       link.addEventListener("click", (e) => {
-        e.preventDefault(); // Preventing form submit
+        e.preventDefault();
         formsRef.current.classList.toggle("show-signup");
       });
     });
-  }, []); // Call useEffect only once after render
+  }, []);
   return (
     <section
       ref={formsRef}

@@ -123,11 +123,16 @@ export const Cart = () => {
   };
 
   const handlePayment = async () => {
+    const generateOrderCode = () => {
+      return Math.floor(100000 + Math.random() * 900000).toString();
+    };
+
     try {
       const userToken = localStorage.getItem("token");
       const header = {
         Authorization: `Bearer ${userToken}`,
       };
+      const orderCodeStatus = generateOrderCode();
       const orderData = {
         userId: userId,
         items: cartItem.map((item) => ({
@@ -141,29 +146,34 @@ export const Cart = () => {
         returnUrl: "http://localhost:3001/success",
         cancelUrl: "http://localhost:3001/fail",
         description: "Mô tả đơn hàng",
+        orderCodeStatus: orderCodeStatus,
       };
       const response = await axios.post(
         "http://localhost:3000/order/create",
         orderData,
         { headers: header }
       );
+
       if (
         response.data &&
         response.data.data &&
         response.data.data.checkoutUrl &&
         response.data.data.cancelUrl &&
-        response.data.data.returnUrl
+        response.data.data.returnUrl &&
+        response.data.data.orderCodeStatus
       ) {
         const checkoutUrl = response.data.data.checkoutUrl;
         const cancelUrl = response.data.data.cancelUrl;
         const returnUrl = response.data.data.returnUrl;
+        const orderCodeStatus = response.data.data.orderCodeStatus;
         console.log("Checkout URL:", checkoutUrl);
-        console.log("Return Url", returnUrl);
+        console.log("Order Data: ", orderData);
         history.push("/checkout", {
           checkoutUrl,
           orderData,
           cancelUrl,
           returnUrl,
+          orderCodeStatus,
         });
       } else {
         console.error("Response không chứa checkoutUrl");

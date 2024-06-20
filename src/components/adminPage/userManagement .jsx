@@ -4,9 +4,17 @@ import "../../assets/css/UserManagementCss.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
+import { jwtDecode } from "jwt-decode";
 export const UserManagement = () => {
   const [users, setUsers] = useState([]);
-
+  const [userRole, setUserRole] = useState(null);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      setUserRole(decodedToken.role);
+    }
+  }, []);
   useEffect(() => {
     const fetchUsers = async () => {
       const token = localStorage.getItem("token");
@@ -28,12 +36,17 @@ export const UserManagement = () => {
     fetchUsers();
   }, []);
 
-  const removeUser = async (userId) => {
+  const removeUser = async (userId, userRole) => {
     const token = localStorage.getItem("token");
     const header = {
       Authorization: `Bearer ${token}`,
     };
 
+    if (userRole === "admin") {
+      toast.error("Tài khoản không thể xóa");
+      return;
+    }
+    console.log(userRole);
     try {
       const response = await axios.delete(
         `http://localhost:3000/user/delete/${userId}`,
@@ -47,26 +60,37 @@ export const UserManagement = () => {
 
   return (
     <div className="container-admin">
-      <h2>Quản Lý Người Dùng</h2>
+      <h2 style={{ textAlign: "center" }}>Quản Lý Người Dùng</h2>
       <div className="user-cards">
         {users.map((user) => (
-          <div className="user-card" key={user.id}>
+          <div className="user-card" key={user._id}>
             <p>
               <strong>ID:</strong> {user._id}
-            </p>
-            <p>
-              <strong>Tên:</strong> {user.name}
             </p>
             <p>
               <strong>Email:</strong> {user.email}
             </p>
             <p>
-              <strong>Số điện thoại:</strong> {user.phone}
+              <strong>Role:</strong> {user.role}
             </p>
-            <button className="btn-remove" onClick={() => removeUser(user._id)}>
-              {" "}
-              <FontAwesomeIcon icon={faTrash} />
-            </button>
+            {user.role !== "admin" && (
+              <>
+                <p>
+                  <strong>Tên:</strong> {user.name}
+                </p>
+                <p>
+                  <strong>Số điện thoại:</strong> {user.phone}
+                </p>
+              </>
+            )}
+            <div>
+              <button
+                className="btn-remove"
+                onClick={() => removeUser(user._id, user.role)}
+              >
+                <FontAwesomeIcon icon={faTrash} />
+              </button>
+            </div>
           </div>
         ))}
       </div>

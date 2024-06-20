@@ -53,6 +53,9 @@
 
 .product-details {
   flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .product-name {
@@ -114,7 +117,6 @@
   display: flex;
   justify-content: space-between; 
   align-items: center; 
-  flex: 1;
   margin-right: 50px;
 }
 .price{

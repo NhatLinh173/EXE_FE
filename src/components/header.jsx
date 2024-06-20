@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import img from "../assets/img/R2.png";
 import { Link } from "react-router-dom";
 import "../assets/css/HeaderCss.css";
-import ChatBox from "./chatbox";
 import { faComment } from "@fortawesome/free-solid-svg-icons";
 export const Header = (props) => {
   const [products, setProducts] = useState([]);

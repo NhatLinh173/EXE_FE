@@ -20,6 +20,14 @@ import Cart from "./components/cart";
 import Service from "./components/service";
 import AppWrapper from "../src/utils/AppWrapper.js";
 import { UserManagement } from "./components/adminPage/userManagement ";
+import { OrderPage } from "./components/adminPage/orderPage";
+import PaidTransactions from "./components/adminPage/paidTransactions.jsx";
+import ProductManager from "./components/adminPage/productManage.jsx";
+import AdminRoute from "./components/adminPage/AdminRoute.jsx";
+import Unauthorized from "./components/unauthorized.jsx";
+import Loading from "./components/loading.jsx";
+import withLoading from "./components/withLoading"; // Import HOC withLoading
+
 const App = () => {
   const [cart, setCart] = useState([]);
 
@@ -35,48 +43,41 @@ const App = () => {
           <ToastContainer />
 
           <Switch>
-            <Route path="/login">
-              <Login />
-            </Route>
-            <Route path="/" exact>
-              <Header />
-            </Route>
-            <Route path="/services">
-              <Service />
-            </Route>
-            <Route path="/about">
-              <About />
-            </Route>
-            <Route path="/profile">
-              <Profile />
-            </Route>
-            <Route path="/admin">
-              <AdminPage />
-            </Route>
-            <Route path="/cart">
-              <Cart />
-            </Route>
+            <Route path="/login" component={withLoading(Login)} />
+            <Route path="/" exact component={withLoading(Header)} />
+            <Route path="/services" component={withLoading(Service)} />
+            <Route path="/about" component={withLoading(About)} />
+            <Route path="/profile" component={withLoading(Profile)} />
+            <Route path="/order-detail" component={withLoading(Order)} />
+            <Route path="/admin" component={withLoading(AdminPage)} />
+            <Route path="/cart" component={withLoading(Cart)} />
             <Route path="/category">
               <Category cart={cart} addToCart={addToCart} />
             </Route>
             <Route path="/productdetail/:productId">
               <ProductDetail addToCart={addToCart} />
             </Route>
-            <Route path="/checkout">
-              <Checkout />
-            </Route>
-            <Route path="/success">
-              <SuccessPage />
-            </Route>
-            <Route path="/fail">
-              <FailurePage />
-            </Route>
-            <Route path="/order-detail">
-              <Order />
-            </Route>
-            <Route path="/admin-user">
-              <UserManagement />
-            </Route>
+            <Route path="/checkout" component={withLoading(Checkout)} />
+            <Route path="/success" component={withLoading(SuccessPage)} />
+            <Route path="/fail" component={withLoading(FailurePage)} />
+            <AdminRoute
+              path="/admin-user"
+              component={withLoading(UserManagement)}
+            />
+            <AdminRoute
+              path="/admin-order"
+              component={withLoading(OrderPage)}
+            />
+            <AdminRoute
+              path="/admin-paid"
+              component={withLoading(PaidTransactions)}
+            />
+            <AdminRoute
+              path="/admin-product"
+              component={withLoading(ProductManager)}
+            />
+            <Route path="/unauthorized" component={withLoading(Unauthorized)} />
+            <Route path="/loading" component={withLoading(Loading)} />
           </Switch>
           <Contact />
         </div>
