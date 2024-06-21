@@ -46,10 +46,13 @@ export const Login = (props) => {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post("http://localhost:3000/auth/login", {
-        email,
-        password,
-      });
+      const response = await axios.post(
+        "https://exe-be.onrender.com/auth/login",
+        {
+          email,
+          password,
+        }
+      );
       if (response.status === 200) {
         toast.success("Đăng Nhập Thành Công", { autoClose: 3000 });
         localStorage.setItem("token", response.data.token);
