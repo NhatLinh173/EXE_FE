@@ -21,10 +21,13 @@ export const Login = (props) => {
       return;
     }
     try {
-      const response = await axios.post("http://localhost:3000/auth/register", {
-        email,
-        password,
-      });
+      const response = await axios.post(
+        "https://exe-be.onrender.com/auth/register",
+        {
+          email,
+          password,
+        }
+      );
       if (response.status === 201) {
         toast.success("Đăng Ký Thành Công", { autoClose: 3000 });
       } else {
