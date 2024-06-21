@@ -143,8 +143,8 @@ export const Cart = () => {
           price: item.price,
         })),
         totalPrice: totalPrice,
-        returnUrl: "http://localhost:3001/success",
-        cancelUrl: "http://localhost:3001/fail",
+        returnUrl: "https://exe-fe.onrender.com/success",
+        cancelUrl: "https://exe-fe.onrender.com/fail",
         description: "Mô tả đơn hàng",
         orderCodeStatus: orderCodeStatus,
       };
