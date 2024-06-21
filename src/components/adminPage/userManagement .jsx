@@ -15,6 +15,7 @@ export const UserManagement = () => {
       setUserRole(decodedToken.role);
     }
   }, []);
+  console.log(userRole);
   useEffect(() => {
     const fetchUsers = async () => {
       const token = localStorage.getItem("token");
