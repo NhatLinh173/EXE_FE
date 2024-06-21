@@ -21,7 +21,7 @@ export const Order = () => {
     const fetchOrderData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/checkout/order/${userId}`
+          `https://exe-be.onrender.com/checkout/order/${userId}`
         );
         setOrderData(response.data);
       } catch (error) {

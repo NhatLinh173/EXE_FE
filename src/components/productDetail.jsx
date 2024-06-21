@@ -20,7 +20,7 @@ const ProductDetail = ({ addToCart }) => {
     const fetchProductDetail = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/product/${productId}`
+          `https://exe-be.onrender.com/product/${productId}`
         );
         setProduct(response.data);
         setLoading(false);
@@ -88,7 +88,7 @@ const ProductDetail = ({ addToCart }) => {
     }
     try {
       const response = await axios.post(
-        "http://localhost:3000/cart/addToCart",
+        "https://exe-be.onrender.com/cart/addToCart",
         {
           userId: userId,
           productId: productId,

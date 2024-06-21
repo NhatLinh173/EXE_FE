@@ -30,7 +30,7 @@ export const Cart = () => {
           Authorization: `Bearer ${userToken}`,
         };
         const response = await axios.get(
-          `http://localhost:3000/cart/cartItem/${userId}`,
+          `https://exe-be.onrender.com/cart/cartItem/${userId}`,
           { headers: header }
         );
 
@@ -62,7 +62,7 @@ export const Cart = () => {
         Authorization: `Bearer ${userToken}`,
       };
       const response = await axios.delete(
-        `http://localhost:3000/cart/remove/${userId}/${productId}`,
+        `https://exe-be.onrender.com/cart/remove/${userId}/${productId}`,
         { headers: header }
       );
       if (response.status === 200) {
@@ -93,7 +93,7 @@ export const Cart = () => {
         Authorization: `Bearer ${userToken}`,
       };
       await axios.put(
-        `http://localhost:3000/cart/updateQuantity/${userId}/${productId}`,
+        `https://exe-be.onrender.com/cart/updateQuantity/${userId}/${productId}`,
         { quantity: newQuantity },
         { headers }
       );
@@ -149,7 +149,7 @@ export const Cart = () => {
         orderCodeStatus: orderCodeStatus,
       };
       const response = await axios.post(
-        "http://localhost:3000/order/create",
+        "https://exe-be.onrender.com/order/create",
         orderData,
         { headers: header }
       );

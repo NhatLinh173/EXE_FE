@@ -81,7 +81,7 @@ export const Checkout = () => {
     localStorage.setItem("orderCodeStatus", orderCodeStatus);
     try {
       const response = await axios.post(
-        "http://localhost:3000/checkout/",
+        "https://exe-be.onrender.com/checkout/",
         checkoutData
       );
 

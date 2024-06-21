@@ -25,7 +25,7 @@ export const Contact = (props) => {
       email: email,
     };
     axios
-      .post("http://localhost:3000/sendEmail", data)
+      .post("https://exe-be.onrender.com/sendEmail", data)
       .then((response) => {
         console.log(response.data);
         clearState();

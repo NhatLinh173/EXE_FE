@@ -12,7 +12,7 @@ export const SuccessPage = () => {
     const orderCodeStatus = localStorage.getItem("orderCodeStatus");
 
     axios
-      .put("http://localhost:3000/checkout/order/update-status", {
+      .put("https://exe-be.onrender.com/checkout/order/update-status", {
         orderCodeStatus,
         status,
       })

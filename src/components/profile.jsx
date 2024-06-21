@@ -27,12 +27,19 @@ export const Profile = (props) => {
         Authorization: `Bearer ${token}`,
       };
 
-      await axios.put("http://localhost:3000/user/update-profile", updateData, {
-        headers,
-      });
-      const response = await axios.get("http://localhost:3000/user/profile", {
-        headers,
-      });
+      await axios.put(
+        "https://exe-be.onrender.com/user/update-profile",
+        updateData,
+        {
+          headers,
+        }
+      );
+      const response = await axios.get(
+        "https://exe-be.onrender.com/user/profile",
+        {
+          headers,
+        }
+      );
       setUserData(response.data);
       setIsUpdating(false);
     } catch (error) {
@@ -48,9 +55,12 @@ export const Profile = (props) => {
           Authorization: `Bearer ${token}`,
         };
 
-        const response = await axios.get("http://localhost:3000/user/profile", {
-          headers,
-        });
+        const response = await axios.get(
+          "https://exe-be.onrender.com/user/profile",
+          {
+            headers,
+          }
+        );
         setUserData(response.data);
         console.log("Data User: ", setUserData);
       } catch (error) {
