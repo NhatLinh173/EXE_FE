@@ -103,7 +103,7 @@ export const Category = ({ items, addToCart }) => {
 
   const fetchProduct = async () => {
     try {
-      const response = await axios.get("https://localhost:3000/product/");
+      const response = await axios.get("http://localhost:3000/product/");
 
       let filteredProducts = response.data;
       if (searchKeyword) {
