@@ -62,7 +62,7 @@ export const Category = ({ items, addToCart }) => {
     }
     try {
       const response = await axios.post(
-        "https://exe-be.vercel.app/cart/addToCart",
+        "https://exe-be.onrender.com/cart/addToCart",
         {
           userId: userId,
           productId: product._id,
@@ -103,7 +103,7 @@ export const Category = ({ items, addToCart }) => {
 
   const fetchProduct = async () => {
     try {
-      const response = await axios.get("https://exe-be.vercel.app/product/");
+      const response = await axios.get("https://exe-be.onrender.com/product/");
 
       let filteredProducts = response.data;
       if (searchKeyword) {
