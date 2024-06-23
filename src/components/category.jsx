@@ -62,7 +62,7 @@ export const Category = ({ items, addToCart }) => {
     }
     try {
       const response = await axios.post(
-        "https://exe-be.onrender.com/cart/addToCart",
+        "http://exe-be.onrender.com",
         {
           userId: userId,
           productId: product._id,
@@ -103,7 +103,7 @@ export const Category = ({ items, addToCart }) => {
 
   const fetchProduct = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/product/");
+      const response = await axios.get("http://exe-be.onrender.com/product/");
 
       let filteredProducts = response.data;
       if (searchKeyword) {
