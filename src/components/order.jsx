@@ -42,7 +42,7 @@ export const Order = () => {
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <div style={{ marginTop: "150px" }}>Loading...</div>;
 
   if (error) return <div>Error: {error.message}</div>;
 
