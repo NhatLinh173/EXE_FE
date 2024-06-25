@@ -18,19 +18,25 @@ export const Order = () => {
   }, []);
 
   useEffect(() => {
-    const fetchOrderData = async () => {
-      try {
-        const response = await axios.get(
-          `https://exe-be.onrender.com/checkout/order/${userId}`
-        );
-        setOrderData(response.data);
-      } catch (error) {
-        setError(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchOrderData();
+    const timeoutId = setTimeout(() => {
+      const fetchOrderData = async () => {
+        try {
+          const response = await axios.get(
+            `https://exe-be.onrender.com/checkout/order/${userId}`
+          );
+          setOrderData(response.data);
+        } catch (error) {
+          setError(error);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchOrderData();
+    }, 2000); // Delay of 2000 milliseconds (2 seconds)
+
+    // Cleanup function to clear the timeout if userId changes or component unmounts
+    return () => clearTimeout(timeoutId);
   }, [userId]);
 
   const formatPrice = (price) => {
