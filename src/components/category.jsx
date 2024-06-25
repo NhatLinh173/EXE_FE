@@ -62,7 +62,7 @@ export const Category = ({ items, addToCart }) => {
     }
     try {
       const response = await axios.post(
-        "https://exe-be.onrender.com",
+        "https://exe-be.onrender.com/cart/addToCart",
         {
           userId: userId,
           productId: product._id,
