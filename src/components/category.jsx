@@ -51,16 +51,94 @@ export const Category = ({ items, addToCart }) => {
     fetchProduct();
   }, [searchKeyword]);
 
+  // const handleAddToCart = async (product) => {
+  //   const token = localStorage.getItem("token");
+  //   const headers = {
+  //     Authorization: `Bearer ${token}`,
+  //   };
+
+  //   if (addedToCartMap[product._id]) {
+  //     toast.warning("Sản phẩm đã có trong giỏ hàng.");
+  //     return;
+  //   }
+  //   try {
+  //     const response = await axios.post(
+  //       "https://exe-be.onrender.com/cart/addToCart",
+  //       {
+  //         userId: userId,
+  //         productId: product._id,
+  //         productName: product.name,
+  //         price: product.price,
+  //         image: product.image,
+  //         quality: 1,
+  //       },
+  //       { headers }
+  //     );
+  //     addToCart(product);
+  //     toast.success("Sản phẩm đã được thêm vào giỏ hàng");
+  //     setAddedToCartMap((prevMap) => ({
+  //       ...prevMap,
+  //       [product._id]: true,
+  //     }));
+  //     setAddedToCart(true);
+
+  //     let cartItems = localStorage.getItem("cartItems");
+  //     if (cartItems) {
+  //       try {
+  //         cartItems = JSON.parse(cartItems);
+  //       } catch (error) {
+  //         console.error("Error parsing cart items: ", error);
+  //         cartItems = [];
+  //       }
+  //     } else {
+  //       cartItems = [];
+  //     }
+  //     const updateCartItems = [...cartItems, { productId: product._id }];
+  //     localStorage.setItem("cartItems", JSON.stringify(updateCartItems));
+  //   } catch (error) {
+  //     console.error("Error adding product to cart: ", error);
+  //     console.log(error);
+  //     toast.error("Đã xảy ra lỗi khi thêm sản phẩm vào giỏ hàng");
+  //   }
+  // };
   const handleAddToCart = async (product) => {
     const token = localStorage.getItem("token");
     const headers = {
       Authorization: `Bearer ${token}`,
     };
-    if (addedToCartMap[product._id]) {
-      toast.warning("Sản phẩm đã có trong giỏ hàng.");
-      return;
-    }
     try {
+      let cartItems = localStorage.getItem("cartItems");
+      let updatedCartItems = [];
+
+      if (cartItems) {
+        try {
+          updatedCartItems = JSON.parse(cartItems);
+        } catch (error) {
+          console.error("Error parsing cart items: ", error);
+          updatedCartItems = [];
+        }
+      }
+
+      // Kiểm tra nếu sản phẩm đã có trong giỏ hàng
+      const existingCartItemIndex = updatedCartItems.findIndex(
+        (item) => item.productId === product._id
+      );
+
+      if (existingCartItemIndex > -1) {
+        // Nếu sản phẩm đã có, tăng số lượng
+        updatedCartItems[existingCartItemIndex].quality += 1;
+      } else {
+        // Nếu sản phẩm chưa có, thêm sản phẩm mới
+        updatedCartItems.push({
+          productId: product._id,
+          quality: 1,
+        });
+      }
+
+      // Cập nhật localStorage
+      localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
+
+      // Gửi yêu cầu đến server để cập nhật giỏ hàng
       const response = await axios.post(
         "https://exe-be.onrender.com/cart/addToCart",
         {
@@ -73,30 +151,20 @@ export const Category = ({ items, addToCart }) => {
         },
         { headers }
       );
+
+      // Thêm sản phẩm vào cart state (nếu cần thiết cho giao diện)
       addToCart(product);
+
+      // Hiển thị thông báo thành công
       toast.success("Sản phẩm đã được thêm vào giỏ hàng");
+
+      // Cập nhật trạng thái sản phẩm đã có trong giỏ hàng
       setAddedToCartMap((prevMap) => ({
         ...prevMap,
         [product._id]: true,
       }));
-      setAddedToCart(true);
-
-      let cartItems = localStorage.getItem("cartItems");
-      if (cartItems) {
-        try {
-          cartItems = JSON.parse(cartItems);
-        } catch (error) {
-          console.error("Error parsing cart items: ", error);
-          cartItems = [];
-        }
-      } else {
-        cartItems = [];
-      }
-      const updateCartItems = [...cartItems, { productId: product._id }];
-      localStorage.setItem("cartItems", JSON.stringify(updateCartItems));
     } catch (error) {
       console.error("Error adding product to cart: ", error);
-      console.log(error);
       toast.error("Đã xảy ra lỗi khi thêm sản phẩm vào giỏ hàng");
     }
   };

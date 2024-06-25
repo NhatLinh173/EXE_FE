@@ -30,8 +30,6 @@ export const Navigation = (props) => {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("cartItems");
-    localStorage.removeItem("orderCodeStatus");
     setIsLoggedIn(false);
     history.push("/");
     window.location.reload();

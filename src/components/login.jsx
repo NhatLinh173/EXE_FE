@@ -59,9 +59,6 @@ export const Login = (props) => {
       } else if (response.status === 500) {
         toast.success("Đăng Nhập Thất Bại", { autoClose: 3000 });
       }
-
-      console.log("Login response: ", response.data);
-
       history.push("/");
       window.location.reload();
     } catch (error) {

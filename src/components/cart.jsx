@@ -49,6 +49,17 @@ export const Cart = () => {
         console.log("Error:", error);
       }
     };
+
+    const cartItemsFromStorage = localStorage.getItem("cartItems");
+    if (cartItemsFromStorage) {
+      try {
+        const parsedCartItems = JSON.parse(cartItemsFromStorage);
+        setCartItem(parsedCartItems);
+        calculateTotalPrice(parsedCartItems);
+      } catch (error) {
+        console.error("Error parsing cart items: ", error);
+      }
+    }
     if (userId) {
       getUserCart();
     }
