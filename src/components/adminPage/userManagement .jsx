@@ -24,9 +24,12 @@ export const UserManagement = () => {
       };
 
       try {
-        const response = await axios.get("http://localhost:3000/user/getAll", {
-          headers: header,
-        });
+        const response = await axios.get(
+          "https://exe-be.onrender.com/user/getAll",
+          {
+            headers: header,
+          }
+        );
         setUsers(response.data);
         console.log(response.data);
       } catch (error) {

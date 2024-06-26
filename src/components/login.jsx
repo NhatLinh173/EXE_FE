@@ -5,7 +5,7 @@ import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { jwtDecode } from "jwt-decode";
+import { jwtDecode } from "jwt-decode"; // Sửa lại import jwtDecode
 export const Login = (props) => {
   const [userId, setUserId] = useState(null);
   const formsRef = useRef(null); // Sử dụng useRef để tham chiếu đến phần tử HTML có class là "forms"
@@ -56,11 +56,13 @@ export const Login = (props) => {
       if (response.status === 200) {
         toast.success("Đăng Nhập Thành Công", { autoClose: 3000 });
         localStorage.setItem("token", response.data.token);
+        history.push("/");
+        setTimeout(() => {
+          window.location.reload();
+        }, 100); // Thêm thời gian trễ ngắn trước khi làm mới trang
       } else if (response.status === 500) {
         toast.success("Đăng Nhập Thất Bại", { autoClose: 3000 });
       }
-      history.push("/");
-      window.location.reload();
     } catch (error) {
       if (error.response && error.response.status === 500) {
         toast.error("Đăng Nhập Thất Bại", { autoClose: 3000 });
@@ -136,7 +138,9 @@ export const Login = (props) => {
               </a>
             </div>
             <div className="field button-field">
-              <button onClick={handleLogin}>Đăng Nhập</button>
+              <button type="button" onClick={handleLogin}>
+                Đăng Nhập
+              </button>
             </div>
           </form>
           <div className="form-link">
@@ -203,7 +207,9 @@ export const Login = (props) => {
               <i className="bx bx-hide eye-icon" />
             </div>
             <div className="field button-field">
-              <button onClick={handleRegister}>Đăng Ký</button>
+              <button type="button" onClick={handleRegister}>
+                Đăng Ký
+              </button>
             </div>
           </form>
           <div className="form-link">

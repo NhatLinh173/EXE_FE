@@ -10,7 +10,9 @@ const PaidTransactions = () => {
   useEffect(() => {
     const fetchPaidTransactions = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/checkout/paid");
+        const response = await axios.get(
+          "https://exe-be.onrender.com/checkout/paid"
+        );
         setTransactions(response.data);
         setLoading(false);
         console.log(response.data);

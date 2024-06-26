@@ -17,7 +17,7 @@ export const OrderPage = () => {
         setLoading(true);
         try {
           const response = await axios.get(
-            `http://localhost:3000/checkout/orders/status/${orderStatus}`
+            `https://exe-be.onrender.com/checkout/orders/status/${orderStatus}`
           );
           console.log(response.data);
           setOrders(response.data);

@@ -267,11 +267,7 @@ export const Category = ({ items, addToCart }) => {
                     className="addToCard"
                     disabled={role === "admin" || addedToCartMap[product._id]}
                   >
-                    {addedToCartMap[product._id] ? (
-                      <p className="in-cart-message">Đã có trong giỏ hàng</p>
-                    ) : (
-                      <FontAwesomeIcon icon={faCartPlus} />
-                    )}
+                    <FontAwesomeIcon icon={faCartPlus} />
                   </button>{" "}
                   <Link to={`/productdetail/${product._id}`}>
                     <button className="addToCard">
