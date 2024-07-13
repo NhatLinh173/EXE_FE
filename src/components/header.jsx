@@ -6,6 +6,7 @@ import img from "../assets/img/R2.png";
 import { Link } from "react-router-dom";
 import "../assets/css/HeaderCss.css";
 import { faComment } from "@fortawesome/free-solid-svg-icons";
+
 export const Header = (props) => {
   const [products, setProducts] = useState([]);
   const [displayedProducts, setDisplayedProducts] = useState([]);
@@ -15,7 +16,6 @@ export const Header = (props) => {
   const [expanded, setExpanded] = useState(false);
   const [showChatButton, setShowChatButton] = useState(true);
 
-  console.log(products);
   const toggleExpand = () => {
     setExpanded(!expanded);
   };
@@ -67,6 +67,7 @@ export const Header = (props) => {
   const handleSearchInputChange = (event) => {
     setSearchKeyword(event.target.value);
   };
+
   return (
     <>
       <header id="header" style={{ marginTop: "22px" }}>
@@ -113,28 +114,28 @@ export const Header = (props) => {
             <h2>Dịch Vụ Của Chúng Tôi</h2>
           </div>
           <div className="row">
-            <div className="col-md-3">
+            <div className="col-md-3 col-sm-6">
               <h3>Giao hàng tận nhà</h3>
               <p>
                 Khách hàng có thể đặt rau trên website của chúng tôi và sẽ được
                 nhận rau trong khoảng thời gian ngắn nhất{" "}
               </p>
             </div>
-            <div className="col-md-3">
+            <div className="col-md-3 col-sm-6">
               <h3>Dịch Vụ Chuyên Nghiệp</h3>
               <p>
                 Chúng tôi đặt sự chuyên nghiệp lên hàng đầu đề phục vụ những
                 điều tốt nhất đến với khách hàng{" "}
               </p>
             </div>
-            <div className="col-md-3">
+            <div className="col-md-3 col-sm-6">
               <h3>Tư vấn - Chăm sóc khách hàng </h3>
               <p>
                 Chúng tôi luôn sẵn sàng hỗ trợ và tư vấn khách hàng trong bất kỳ
                 khoản thời gian nào mà khách hàng cần chúng tôi
               </p>
             </div>
-            <div className="col-md-3">
+            <div className="col-md-3 col-sm-6">
               <h3>Tư Vấn Dinh Dưỡng</h3>
               <p>
                 Chúng tôi có thể tư vấn khách hàng về vấn đề dinh dưỡng và các
@@ -145,6 +146,7 @@ export const Header = (props) => {
           </div>
         </div>
       </div>
+
       <div id="about">
         <div className="container">
           <div className="row">
@@ -231,6 +233,7 @@ export const Header = (props) => {
           </div>
         </div>
       </div>
+
       <div id="category" className="text-center">
         <div className="container">
           <div className="section-title">
@@ -254,10 +257,14 @@ export const Header = (props) => {
           )}
           <div className="row">
             {displayedProducts.map((product) => (
-              <div className="col-md-4" key={product.id}>
+              <div className="col-md-4 col-sm-6" key={product.id}>
                 <Link to="/category" className="custom-link">
                   <div className="portfolio-items product-item">
-                    <img src={product.image} alt="" />
+                    <img
+                      src={product.image}
+                      alt=""
+                      className="img-responsive"
+                    />
                     <h3>{product.name}</h3>
                     <p>{formatPrice(product.price)} VND</p>
                     <p>{product.description}</p>

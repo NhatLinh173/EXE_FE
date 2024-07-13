@@ -33,8 +33,6 @@ export const Login = (props) => {
       } else {
         toast.error("Đăng Ký Không Thành Công", { autoClose: 3000 });
       }
-
-      console.log("Register response: ", response.data);
     } catch (error) {
       if (error.response && error.response.status === 500) {
         toast.error(" Đăng Ký Thất Bại", { autoClose: 3000 });

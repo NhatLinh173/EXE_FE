@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "../../assets/css/ProductManagerCss.css"; // Import CSS file
+import "../../assets/css/ProductManagerCss.css";
 
 const ProductManager = () => {
   const [products, setProducts] = useState([]);
@@ -65,7 +65,7 @@ const ProductManager = () => {
             }
           />
           <input
-            type="number"
+            type="text"
             placeholder="Price"
             value={newProduct.price}
             onChange={(e) =>

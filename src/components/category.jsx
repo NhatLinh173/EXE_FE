@@ -8,7 +8,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartPlus, faCircleInfo } from "@fortawesome/free-solid-svg-icons";
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
-export const Category = ({ items, addToCart }) => {
+
+export const Category = ({ addToCart }) => {
   const [products, setProducts] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState("");
   const [displayedProducts, setDisplayedProducts] = useState([]);
@@ -17,11 +18,21 @@ export const Category = ({ items, addToCart }) => {
   const [userId, setUserId] = useState(null);
   const [role, setRole] = useState(null);
   const [addedToCartMap, setAddedToCartMap] = useState({});
-  const [addedToCart, setAddedToCart] = useState(false);
   const history = useHistory();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      setUserId(decodedToken.id_user);
+      setRole(decodedToken.role);
+    }
+    fetchProducts();
+  }, []);
+
   useEffect(() => {
     if (userId) {
-      fetchProduct();
+      fetchProducts();
     }
   }, [searchKeyword, userId]);
 
@@ -41,105 +52,57 @@ export const Category = ({ items, addToCart }) => {
     }
   }, []);
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      const decodedToken = jwtDecode(token);
-      setUserId(decodedToken.id_user);
-      setRole(decodedToken.role);
+  const fetchProducts = async () => {
+    try {
+      const response = await axios.get("https://exe-be.onrender.com/product/");
+      let filteredProducts = response.data;
+      if (searchKeyword) {
+        filteredProducts = filteredProducts.filter((product) =>
+          product.name.toLowerCase().includes(searchKeyword.toLowerCase())
+        );
+      }
+      setProducts(filteredProducts);
+      setDisplayedProducts(
+        filteredProducts.slice(0, numberOfDisplayedProducts)
+      );
+      setNoResults(filteredProducts.length === 0);
+    } catch (error) {
+      console.error("Error fetching products", error);
     }
-    fetchProduct();
-  }, [searchKeyword]);
+  };
 
-  // const handleAddToCart = async (product) => {
-  //   const token = localStorage.getItem("token");
-  //   const headers = {
-  //     Authorization: `Bearer ${token}`,
-  //   };
-
-  //   if (addedToCartMap[product._id]) {
-  //     toast.warning("Sản phẩm đã có trong giỏ hàng.");
-  //     return;
-  //   }
-  //   try {
-  //     const response = await axios.post(
-  //       "https://exe-be.onrender.com/cart/addToCart",
-  //       {
-  //         userId: userId,
-  //         productId: product._id,
-  //         productName: product.name,
-  //         price: product.price,
-  //         image: product.image,
-  //         quality: 1,
-  //       },
-  //       { headers }
-  //     );
-  //     addToCart(product);
-  //     toast.success("Sản phẩm đã được thêm vào giỏ hàng");
-  //     setAddedToCartMap((prevMap) => ({
-  //       ...prevMap,
-  //       [product._id]: true,
-  //     }));
-  //     setAddedToCart(true);
-
-  //     let cartItems = localStorage.getItem("cartItems");
-  //     if (cartItems) {
-  //       try {
-  //         cartItems = JSON.parse(cartItems);
-  //       } catch (error) {
-  //         console.error("Error parsing cart items: ", error);
-  //         cartItems = [];
-  //       }
-  //     } else {
-  //       cartItems = [];
-  //     }
-  //     const updateCartItems = [...cartItems, { productId: product._id }];
-  //     localStorage.setItem("cartItems", JSON.stringify(updateCartItems));
-  //   } catch (error) {
-  //     console.error("Error adding product to cart: ", error);
-  //     console.log(error);
-  //     toast.error("Đã xảy ra lỗi khi thêm sản phẩm vào giỏ hàng");
-  //   }
-  // };
   const handleAddToCart = async (product) => {
     const token = localStorage.getItem("token");
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    };
+    const headers = { Authorization: `Bearer ${token}` };
+    let cartItems = localStorage.getItem("cartItems");
+    let updatedCartItems = [];
+
+    if (cartItems) {
+      try {
+        updatedCartItems = JSON.parse(cartItems);
+      } catch (error) {
+        console.error("Error parsing cart items: ", error);
+        updatedCartItems = [];
+      }
+    }
+
+    const existingCartItemIndex = updatedCartItems.findIndex(
+      (item) => item.productId === product._id
+    );
+
+    if (existingCartItemIndex > -1) {
+      updatedCartItems[existingCartItemIndex].quality += 1;
+    } else {
+      updatedCartItems.push({
+        productId: product._id,
+        quality: 1,
+      });
+    }
+
+    localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
+
     try {
-      let cartItems = localStorage.getItem("cartItems");
-      let updatedCartItems = [];
-
-      if (cartItems) {
-        try {
-          updatedCartItems = JSON.parse(cartItems);
-        } catch (error) {
-          console.error("Error parsing cart items: ", error);
-          updatedCartItems = [];
-        }
-      }
-
-      // Kiểm tra nếu sản phẩm đã có trong giỏ hàng
-      const existingCartItemIndex = updatedCartItems.findIndex(
-        (item) => item.productId === product._id
-      );
-
-      if (existingCartItemIndex > -1) {
-        // Nếu sản phẩm đã có, tăng số lượng
-        updatedCartItems[existingCartItemIndex].quality += 1;
-      } else {
-        // Nếu sản phẩm chưa có, thêm sản phẩm mới
-        updatedCartItems.push({
-          productId: product._id,
-          quality: 1,
-        });
-      }
-
-      // Cập nhật localStorage
-      localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
-
-      // Gửi yêu cầu đến server để cập nhật giỏ hàng
-      const response = await axios.post(
+      await axios.post(
         "https://exe-be.onrender.com/cart/addToCart",
         {
           userId: userId,
@@ -152,13 +115,8 @@ export const Category = ({ items, addToCart }) => {
         { headers }
       );
 
-      // Thêm sản phẩm vào cart state (nếu cần thiết cho giao diện)
       addToCart(product);
-
-      // Hiển thị thông báo thành công
       toast.success("Sản phẩm đã được thêm vào giỏ hàng");
-
-      // Cập nhật trạng thái sản phẩm đã có trong giỏ hàng
       setAddedToCartMap((prevMap) => ({
         ...prevMap,
         [product._id]: true,
@@ -166,37 +124,6 @@ export const Category = ({ items, addToCart }) => {
     } catch (error) {
       console.error("Error adding product to cart: ", error);
       toast.error("Đã xảy ra lỗi khi thêm sản phẩm vào giỏ hàng");
-    }
-  };
-
-  const fetchProduct = async () => {
-    try {
-      const response = await axios.get("https://exe-be.onrender.com/product/");
-
-      let filteredProducts = response.data;
-      if (searchKeyword) {
-        filteredProducts = filteredProducts.filter((product) =>
-          product.name.toLowerCase().includes(searchKeyword.toLowerCase())
-        );
-      }
-
-      setDisplayedProducts(
-        filteredProducts.slice(0, numberOfDisplayedProducts)
-      );
-
-      setProducts(filteredProducts);
-
-      if (filteredProducts.length > 0) {
-        setDisplayedProducts(
-          filteredProducts.slice(0, numberOfDisplayedProducts)
-        );
-        setNoResults(false);
-      } else {
-        setDisplayedProducts([]);
-        setNoResults(true);
-      }
-    } catch (error) {
-      console.error("Error fetching products", error);
     }
   };
 
@@ -210,28 +137,10 @@ export const Category = ({ items, addToCart }) => {
     setSearchKeyword(event.target.value);
   };
 
-  useEffect(() => {
-    displayedProducts.forEach((product) => {
-      const cartItems = localStorage.getItem("cartItems");
-      if (cartItems) {
-        try {
-          const parsedCartItems = JSON.parse(cartItems);
-          const found = parsedCartItems.some(
-            (item) => item.productId === product._id
-          );
-          if (found) {
-            setAddedToCart(true);
-          }
-        } catch (error) {
-          console.error("Error parsing cart items: ", error);
-        }
-      }
-    });
-  }, [displayedProducts]);
-
   const formatPrice = (price) => {
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
+
   return (
     <div id="category" className="text-center" style={{ paddingTop: "150px" }}>
       <div className="container">
@@ -247,7 +156,7 @@ export const Category = ({ items, addToCart }) => {
             onChange={handleSearchInputChange}
             placeholder="Tìm kiếm sản phẩm..."
           />
-          <button type="submit" id="search-button" onClick={fetchProduct}>
+          <button type="submit" id="search-button" onClick={fetchProducts}>
             <i className="fa fa-search"></i>
           </button>
         </div>
