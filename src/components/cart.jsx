@@ -35,55 +35,29 @@ export const Cart = () => {
         );
 
         if (Array.isArray(response.data)) {
-          const mergedItems = mergeCartItems(response.data);
-          setCartItem(mergedItems);
-          calculateTotalPrice(mergedItems);
+          const defaultQuantityItems = response.data.map((item) => ({
+            ...item,
+            quantity: item.quality,
+          }));
+          setCartItem(defaultQuantityItems);
+          calculateTotalPrice(defaultQuantityItems);
         } else {
           console.error("API response is not an array:", response.data);
         }
       } catch (error) {
         console.error("Error fetching user cart: ", error);
+        console.log("Error:", error);
       }
     };
-
-    const cartItemsFromStorage = localStorage.getItem("cartItems");
-    if (cartItemsFromStorage) {
-      try {
-        const parsedCartItems = JSON.parse(cartItemsFromStorage);
-        const mergedCartItems = mergeCartItems(parsedCartItems);
-        setCartItem(mergedCartItems);
-        calculateTotalPrice(mergedCartItems);
-      } catch (error) {
-        console.error("Error parsing cart items: ", error);
-      }
-    }
-
     if (userId) {
       getUserCart();
     }
   }, [userId]);
 
-  const mergeCartItems = (items) => {
-    const mergedItems = [];
-
-    items.forEach((item) => {
-      const existingItem = mergedItems.find(
-        (mergedItem) => mergedItem.productId === item.productId
-      );
-
-      if (existingItem) {
-        existingItem.quantity += item.quantity;
-      } else {
-        mergedItems.push({ ...item });
-      }
-    });
-
-    return mergedItems;
-  };
-
   const handleRemoveProduct = async (productId) => {
     try {
       const userToken = localStorage.getItem("token");
+      console.log("test remove", productId);
       const header = {
         Authorization: `Bearer ${userToken}`,
       };
@@ -97,10 +71,9 @@ export const Cart = () => {
           (item) => item.productId !== productId
         );
         localStorage.setItem("cartItems", JSON.stringify(updateCartItems));
-        setCartItem(updateCartItems);
-        calculateTotalPrice(updateCartItems);
         toast.success("Đã xóa sản phẩm thành công");
       }
+      window.location.reload();
     } catch (error) {
       console.error("Error removing product from cart: ", error);
     }
@@ -128,6 +101,7 @@ export const Cart = () => {
       toast.success("Đã cập nhật số lượng sản phẩm");
     } catch (error) {
       console.error("Error updating product quantity: ", error);
+      console.log(error);
       toast.error("Có lỗi xảy ra khi cập nhật số lượng. Vui lòng thử lại.");
     }
   };
@@ -137,7 +111,7 @@ export const Cart = () => {
       const productTotal = item.price * item.quantity;
       setProductPrices((prevState) => ({
         ...prevState,
-        [item.productId]: productTotal,
+        [item._id]: productTotal,
       }));
       return acc + productTotal;
     }, 0);
@@ -145,10 +119,7 @@ export const Cart = () => {
   };
 
   const formatPrice = (price) => {
-    return price.toLocaleString("vi-VN", {
-      style: "currency",
-      currency: "VND",
-    });
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
   const handlePayment = async () => {
@@ -233,7 +204,7 @@ export const Cart = () => {
                   <div className="product-details">
                     <p>{item.productName} </p>
                     <p className="price">
-                      {formatPrice(productPrices[item.productId] || 0)}
+                      {formatPrice(productPrices[item._id] || 0)}
                     </p>
                     <div className="quantity-controls">
                       <button
@@ -269,9 +240,9 @@ export const Cart = () => {
               </li>
             ))}
           </ul>
-          <div className="total-price">
+          {/* <div className="total-price">
             <p>Tổng số tiền: {formatPrice(totalPrice)} </p>
-          </div>
+          </div> */}
           <div className="payment-btn">
             <button onClick={handlePayment}>Thanh Toán</button>
           </div>

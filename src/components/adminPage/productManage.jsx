@@ -123,7 +123,7 @@ const ProductManager = () => {
                 <strong>Description:</strong> {product.description}
               </p>
               <p>
-                <strong>Quantity:</strong> {product.quantity}
+                <strong>Quantity:</strong> {product.quality}
               </p>
               <p>
                 <img src={product.image} alt="" />
