@@ -35,7 +35,9 @@ export const OrderPage = () => {
 
   const handleDelete = async (orderId) => {
     try {
-      await axios.delete(`http://localhost:3000/checkout/remove/${orderId}`);
+      await axios.delete(
+        `https://exe-be.onrender.com/checkout/remove/${orderId}`
+      );
       const updatedOrders = orders.filter((order) => order._id !== orderId);
       setOrders(updatedOrders);
       toast.success("Order deleted successfully!");
@@ -67,7 +69,7 @@ export const OrderPage = () => {
 
     try {
       const response = await axios.put(
-        "http://localhost:3000/checkout/order/update-status",
+        "https://exe-be.onrender.com/checkout/order/update-status",
         updatePayload
       );
 
