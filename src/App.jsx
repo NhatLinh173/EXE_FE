@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Navigation } from "./components/navigation";
 import { Header } from "./components/header";
-import { About } from "./components/about";
+import About  from "./components/about";
 import { Contact } from "./components/contact";
 import { Category } from "./components/category";
 import { Login } from "./components/login";
@@ -26,7 +26,7 @@ import ProductManager from "./components/adminPage/productManage.jsx";
 import AdminRoute from "./components/adminPage/AdminRoute.jsx";
 import Unauthorized from "./components/unauthorized.jsx";
 import Loading from "./components/loading.jsx";
-import withLoading from "./components/withLoading"; // Import HOC withLoading
+import withLoading from "./components/withLoading";
 
 const App = () => {
   const [cart, setCart] = useState([]);

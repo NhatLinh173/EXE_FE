@@ -1,6 +1,6 @@
 import "../assets/css/ServiceCss.css";
 
-export const Service = () => {
+const Service = () => {
   return (
     <div id="services" className="text-center" style={{ padding: "150px" }}>
       <div className="container-service">

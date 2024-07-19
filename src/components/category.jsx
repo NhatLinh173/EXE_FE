@@ -1,4 +1,6 @@
+// src/components/Category.jsx
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { jwtDecode } from "jwt-decode";
 import "../assets/css/SearchCss.css";
 import axios from "axios";
@@ -6,10 +8,10 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartPlus, faCircleInfo } from "@fortawesome/free-solid-svg-icons";
-import { useHistory } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
+import { addToCart, setCartItems } from "../utils/cartSlice";
 
-export const Category = ({ addToCart }) => {
+export const Category = () => {
   const [products, setProducts] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState("");
   const [displayedProducts, setDisplayedProducts] = useState([]);
@@ -17,7 +19,8 @@ export const Category = ({ addToCart }) => {
   const [noResults, setNoResults] = useState(false);
   const [userId, setUserId] = useState(null);
   const [role, setRole] = useState(null);
-  const [addedToCartMap, setAddedToCartMap] = useState({});
+  const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.cart.cartItems);
   const history = useHistory();
 
   useEffect(() => {
@@ -31,77 +34,52 @@ export const Category = ({ addToCart }) => {
   }, []);
 
   useEffect(() => {
-    if (userId) {
-      fetchProducts();
-    }
-  }, [searchKeyword, userId]);
-
-  useEffect(() => {
     const cartItems = localStorage.getItem("cartItems");
     if (cartItems) {
       try {
         const parsedCartItems = JSON.parse(cartItems);
-        const newAddedToCartMap = {};
-        parsedCartItems.forEach((item) => {
-          newAddedToCartMap[item.productId] = true;
-        });
-        setAddedToCartMap(newAddedToCartMap);
+        dispatch(setCartItems(parsedCartItems));
       } catch (error) {
         console.error("Error parsing cart items: ", error);
       }
     }
-  }, []);
+  }, [dispatch]);
 
   const fetchProducts = async () => {
     try {
       const response = await axios.get("https://exe-be.onrender.com/product/");
-      let filteredProducts = response.data;
-      if (searchKeyword) {
-        filteredProducts = filteredProducts.filter((product) =>
-          product.name.toLowerCase().includes(searchKeyword.toLowerCase())
-        );
-      }
-      setProducts(filteredProducts);
-      setDisplayedProducts(
-        filteredProducts.slice(0, numberOfDisplayedProducts)
-      );
-      setNoResults(filteredProducts.length === 0);
+      setProducts(response.data);
+      filterProducts(response.data, searchKeyword);
     } catch (error) {
       console.error("Error fetching products", error);
     }
   };
 
+  const filterProducts = (allProducts, keyword) => {
+    let filteredProducts = allProducts;
+    if (keyword) {
+      filteredProducts = filteredProducts.filter((product) =>
+        product.name.toLowerCase().includes(keyword.toLowerCase())
+      );
+    }
+    setDisplayedProducts(filteredProducts.slice(0, numberOfDisplayedProducts));
+    setNoResults(filteredProducts.length === 0);
+  };
+
+  const handleSearchInputChange = (event) => {
+    setSearchKeyword(event.target.value);
+  };
+
+  useEffect(() => {
+    filterProducts(products, searchKeyword);
+  }, [searchKeyword, products]);
+
   const handleAddToCart = async (product) => {
     const token = localStorage.getItem("token");
     const headers = { Authorization: `Bearer ${token}` };
-    let cartItems = localStorage.getItem("cartItems");
-    let updatedCartItems = [];
-
-    if (cartItems) {
-      try {
-        updatedCartItems = JSON.parse(cartItems);
-      } catch (error) {
-        console.error("Error parsing cart items: ", error);
-        updatedCartItems = [];
-      }
-    }
-
-    const existingCartItemIndex = updatedCartItems.findIndex(
-      (item) => item.productId === product._id
-    );
-
-    if (existingCartItemIndex > -1) {
-      updatedCartItems[existingCartItemIndex].quality += 1;
-    } else {
-      updatedCartItems.push({
-        productId: product._id,
-        quality: 1,
-      });
-    }
-
-    localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
 
     try {
+      // Gửi yêu cầu đến backend để thêm sản phẩm vào giỏ hàng
       await axios.post(
         "https://exe-be.onrender.com/cart/addToCart",
         {
@@ -115,12 +93,19 @@ export const Category = ({ addToCart }) => {
         { headers }
       );
 
-      addToCart(product);
+      // Cập nhật giỏ hàng trong Redux
+      dispatch(
+        addToCart({
+          productId: product._id,
+          productName: product.name,
+          price: product.price,
+          image: product.image,
+          quality: 1,
+        })
+      );
+
+      // Thông báo thành công
       toast.success("Sản phẩm đã được thêm vào giỏ hàng");
-      setAddedToCartMap((prevMap) => ({
-        ...prevMap,
-        [product._id]: true,
-      }));
     } catch (error) {
       console.error("Error adding product to cart: ", error);
       toast.error("Đã xảy ra lỗi khi thêm sản phẩm vào giỏ hàng");
@@ -131,10 +116,6 @@ export const Category = ({ addToCart }) => {
     const newNumberOfDisplayedProducts = numberOfDisplayedProducts + 9;
     setNumberOfDisplayedProducts(newNumberOfDisplayedProducts);
     setDisplayedProducts(products.slice(0, newNumberOfDisplayedProducts));
-  };
-
-  const handleSearchInputChange = (event) => {
-    setSearchKeyword(event.target.value);
   };
 
   const formatPrice = (price) => {
@@ -156,9 +137,6 @@ export const Category = ({ addToCart }) => {
             onChange={handleSearchInputChange}
             placeholder="Tìm kiếm sản phẩm..."
           />
-          <button type="submit" id="search-button" onClick={fetchProducts}>
-            <i className="fa fa-search"></i>
-          </button>
         </div>
         {noResults && (
           <div className="no-results">Không có sản phẩm phù hợp.</div>
@@ -174,7 +152,7 @@ export const Category = ({ addToCart }) => {
                   <button
                     onClick={() => handleAddToCart(product)}
                     className="addToCard"
-                    disabled={role === "admin" || addedToCartMap[product._id]}
+                    disabled={role === "admin"}
                   >
                     <FontAwesomeIcon icon={faCartPlus} />
                   </button>{" "}

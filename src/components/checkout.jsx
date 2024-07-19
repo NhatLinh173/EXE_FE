@@ -60,6 +60,8 @@ export const Checkout = () => {
     let status = "PENDING";
     if (formData.paymentMethod === "cash") {
       confirmationMessage = "Đơn hàng của bạn đang đợi xác nhận";
+    } else if (formData.paymentMethod === "PayOs") {
+      status = "PAID";
     }
 
     const shippingCost = shippingMethod === "express" ? 20000 : 0;
@@ -84,7 +86,7 @@ export const Checkout = () => {
         "https://exe-be.onrender.com/checkout/",
         checkoutData
       );
-
+      localStorage.removeItem("cartItems");
       if (formData.paymentMethod === "cash") {
         toast.info(confirmationMessage);
 

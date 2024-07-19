@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import img from "../assets/img/R2.png";
 import "../assets/css/AboutCss.css";
-export const About = (props) => {
+
+const About = (props) => {
   const [expanded, setExpanded] = useState(false);
 
   const toggleExpand = () => {
@@ -95,3 +96,5 @@ export const About = (props) => {
     </div>
   );
 };
+
+export default About;

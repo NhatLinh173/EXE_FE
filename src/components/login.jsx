@@ -57,7 +57,7 @@ export const Login = (props) => {
         history.push("/");
         setTimeout(() => {
           window.location.reload();
-        }, 100); // Thêm thời gian trễ ngắn trước khi làm mới trang
+        }, 100);
       } else if (response.status === 500) {
         toast.success("Đăng Nhập Thất Bại", { autoClose: 3000 });
       }

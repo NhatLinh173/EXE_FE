@@ -9,6 +9,7 @@ export const Navigation = (props) => {
   const [userRole, setUserRole] = useState(null);
   const [cartLength, setCartLength] = useState(0);
   const history = useHistory();
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
@@ -34,6 +35,7 @@ export const Navigation = (props) => {
     history.push("/");
     window.location.reload();
   };
+
   const logoStyle = {
     width: "60px",
     height: "60px",
@@ -46,6 +48,11 @@ export const Navigation = (props) => {
     height: "100%",
     objectFit: "cover",
   };
+
+  const handleNavigation = (path) => {
+    history.push(path);
+  };
+
   return (
     <nav id="menu" className="navbar navbar-default navbar-fixed-top">
       <div className="container">
@@ -64,9 +71,12 @@ export const Navigation = (props) => {
           </button>
           <div style={{ display: "flex", alignItems: "center" }}>
             <div style={{ ...logoStyle, marginRight: "20px" }}>
-              <img src={logo} style={imageStyle}></img>
+              <img src={logo} style={imageStyle} alt="Logo"></img>
             </div>
-            <a className="navbar-brand page-scroll" href="/">
+            <a
+              className="navbar-brand page-scroll"
+              onClick={() => handleNavigation("/")}
+            >
               <span style={{ color: "#7FFF00" }}>Green </span> Fresh
             </a>{" "}
           </div>
@@ -79,12 +89,18 @@ export const Navigation = (props) => {
             {userRole !== "admin" && (
               <>
                 <li>
-                  <a href="/order-detail" className="page-scroll">
+                  <a
+                    className="page-scroll"
+                    onClick={() => handleNavigation("/order-detail")}
+                  >
                     Order
                   </a>
                 </li>
                 <li>
-                  <a href="/cart" className="page-scroll">
+                  <a
+                    className="page-scroll"
+                    onClick={() => handleNavigation("/cart")}
+                  >
                     Giỏ Hàng{" "}
                     {cartLength > 0 && (
                       <span className="cart-counter">({cartLength})</span>
@@ -95,26 +111,38 @@ export const Navigation = (props) => {
             )}
 
             <li>
-              <a href="/category" className="page-scroll">
+              <a
+                className="page-scroll"
+                onClick={() => handleNavigation("/category")}
+              >
                 Sản Phẩm
               </a>
             </li>
             <li>
-              <a href="/about" className="page-scroll">
+              <a
+                className="page-scroll"
+                onClick={() => handleNavigation("/about")}
+              >
                 Chúng Tôi
               </a>
             </li>
 
             {isLoggedIn && (
               <li>
-                <a href="/profile" className="page-scroll">
+                <a
+                  className="page-scroll"
+                  onClick={() => handleNavigation("/profile")}
+                >
                   Tài Khoản
                 </a>
               </li>
             )}
             {userRole === "admin" && (
               <li>
-                <a href="/admin" className="page-scroll">
+                <a
+                  className="page-scroll"
+                  onClick={() => handleNavigation("/admin")}
+                >
                   Quản Lý
                 </a>
               </li>
@@ -122,11 +150,14 @@ export const Navigation = (props) => {
 
             <li>
               {isLoggedIn ? (
-                <a href="/" className="page-scroll" onClick={handleLogout}>
+                <a className="page-scroll" onClick={handleLogout}>
                   Đăng Xuất
                 </a>
               ) : (
-                <a href="/login" className="page-scroll">
+                <a
+                  className="page-scroll"
+                  onClick={() => handleNavigation("/login")}
+                >
                   Đăng Nhập
                 </a>
               )}
