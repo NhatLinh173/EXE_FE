@@ -86,7 +86,7 @@ export const Checkout = () => {
         "https://exe-be.onrender.com/checkout/",
         checkoutData
       );
-      localStorage.removeItem("cartItems");
+      localStorage.removeItem("persist:root");
       if (formData.paymentMethod === "cash") {
         toast.info(confirmationMessage);
 

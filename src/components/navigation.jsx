@@ -31,6 +31,7 @@ export const Navigation = (props) => {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("persist:root");
     setIsLoggedIn(false);
     history.push("/");
     window.location.reload();
